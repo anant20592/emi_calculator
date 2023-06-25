@@ -18,25 +18,6 @@ export default function App() {
     totalPayable: 0,
   });
 
-  const calculateEmi = () => {
-    const emi =
-      ((loanObj.homeLoanAmount *
-        (loanObj.interestRate / 100) *
-        (1 + loanObj.interestRate / 100)) ^
-        loanObj.loanTenure) /
-      ((1 + loanObj.interestRate / 100) ^ (loanObj.loanTenure - 1));
-    console.log('EMi - ', emi, emi * 12 * loanObj.loanTenure);
-    setLoanObj({
-      ...loanObj,
-      emi: emi,
-      totalPayable: emi * 12 * loanObj.loanTenure,
-      totalInterest: emi * 12 * loanObj.loanTenure - loanObj.homeLoanAmount,
-    });
-  };
-
-  React.useEffect(() => {
-   // calculateEmi();
-  }, [])
   return (
     <LoanContext.Provider value={{ loanObj, setLoanObj }}>
       <div>

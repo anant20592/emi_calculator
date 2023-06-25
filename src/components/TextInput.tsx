@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LoanContext from '../context/LoanContext';
+import LoanContext, { LoanContextI } from '../context/LoanContext';
 
 export interface TextInputProps {
   name: string;
@@ -13,8 +13,25 @@ const TextInput = ({ name, label, type, rangeProps }: TextInputProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
-    setLoanObj({ ...loanObj, [name]: e.target.value });
+    const obj = { ...loanObj, [name]: e.target.value };
+    calculateEmi(obj);
   };
+
+  const calculateEmi = (obj: LoanContextI) => {
+    const emi =
+      ((obj.homeLoanAmount *
+        (obj.interestRate / 100) *
+        (1 + obj.interestRate / 100)) ^
+        obj.loanTenure) /
+      ((1 + obj.interestRate / 100) ^ (obj.loanTenure - 1));
+    setLoanObj({
+      ...obj,
+      emi: emi,
+      totalPayable: emi * 12 * obj.loanTenure,
+      totalInterest: emi * 12 * obj.loanTenure - obj.homeLoanAmount,
+    });
+  };
+
   return (
     <>
       {type === 'number' && (
