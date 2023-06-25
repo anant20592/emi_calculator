@@ -33,13 +33,16 @@ export default function App() {
       totalInterest: emi * 12 * loanObj.loanTenure - loanObj.homeLoanAmount,
     });
   };
+
+  React.useEffect(() => {
+   // calculateEmi();
+  }, [])
   return (
     <LoanContext.Provider value={{ loanObj, setLoanObj }}>
       <div>
         <h1>EMI Calculator for Home loan</h1>
         <div>
           <LoanComponentGroup />
-          <button onClick={calculateEmi}>Calculate EMI</button>
         </div>
         <LoanBreakup />
       </div>
